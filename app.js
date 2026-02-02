@@ -8,6 +8,7 @@ const loginRouter = require("./controllers/login")
 
 const app = express()
 app.use(express.json())
+app.use(express.static("frontend/dist"))
 
 const mongoUrl = config.MONGODB_URI
 mongoose.connect(mongoUrl)
