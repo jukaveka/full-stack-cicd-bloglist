@@ -1,0 +1,13 @@
+Name: CI/CD pipeline
+
+on:
+  push:
+    branches:
+      - cicd-pipeline
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test steps
+        run: echo "Testaillaa vähe"
