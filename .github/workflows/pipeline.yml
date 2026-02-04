@@ -6,8 +6,16 @@ on:
       - cicd-pipeline
 
 jobs:
-  test_job:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - name: Test steps
-        run: echo "Testaillaa vähe"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm install
+      - name: Build UI
+        run: npm build:ui
+      - name: Test UI
+        run: npm run test:ui
