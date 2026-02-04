@@ -18,6 +18,8 @@ jobs:
           npm install
           cd frontend/ && npm install
           cd ..
+      - name: Lint UI
+        run: npm run lint:ui
       - name: Build UI
         run: npm run build:ui
       - name: Test UI

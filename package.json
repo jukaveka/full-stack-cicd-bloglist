@@ -9,7 +9,8 @@
     "test:ui": "cd frontend && npm test",
     "test:e2e": "cd e2e-tests && npm test",
     "start:test": "NODE_ENV=test node index.js",
-    "build:ui": "cd frontend/ && rm -rf dist && npm run build"
+    "build:ui": "cd frontend/ && rm -rf dist && npm run build",
+    "lint:ui": "cd frontend/ && npm run lint"
   },
   "author": "Juho Kavekari",
   "license": "MIT",
