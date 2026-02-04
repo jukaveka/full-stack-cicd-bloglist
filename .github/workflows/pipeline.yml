@@ -16,6 +16,6 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build UI
-        run: npm build:ui
+        run: npm run build:ui
       - name: Test UI
         run: npm run test:ui
