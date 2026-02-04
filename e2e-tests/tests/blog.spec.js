@@ -151,12 +151,7 @@ describe("Blog app", () => {
       test("blogs are displayed by their likes, in descending order", async ({ page }) => {
         await likeBlog(page, secondBlog.title, secondBlog.author)
         await likeBlog(page, secondBlog.title, secondBlog.author)
-        await likeBlog(page, secondBlog.title, secondBlog.author)
-        await likeBlog(page, secondBlog.title, secondBlog.author)
-        await likeBlog(page, secondBlog.title, secondBlog.author)
 
-        await likeBlog(page, thirdBlog.title, thirdBlog.author)
-        await likeBlog(page, thirdBlog.title, thirdBlog.author)
         await likeBlog(page, thirdBlog.title, thirdBlog.author)
 
         await page.getByRole("button", { name: "View" }).first().click()
