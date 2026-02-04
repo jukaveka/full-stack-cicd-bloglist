@@ -1,42 +1,40 @@
-const listOfTestUsers =
-  [
-    {
-      username: "Testimies",
-      name: "Mies",
-      passwordHash: "Testimiehensalasana"
-    },
-    {
-      username: "Testinainen",
-      name: "Nainen",
-      passwordHash: "Testinaisensalasana"
-    },
-    {
-      username: "Testimuu",
-      name: "Muu",
-      passwordHash: "Testimuunsalasana"
-    }
-  ]
+const listOfTestUsers = [
+  {
+    username: "Testimies",
+    name: "Mies",
+    passwordHash: "Testimiehensalasana",
+  },
+  {
+    username: "Testinainen",
+    name: "Nainen",
+    passwordHash: "Testinaisensalasana",
+  },
+  {
+    username: "Testimuu",
+    name: "Muu",
+    passwordHash: "Testimuunsalasana",
+  },
+]
 
 const listOfLoginTestUsers = [
   {
     username: "Testimies",
     name: "Mies",
-    password: "Testimiehensalasana"
+    password: "Testimiehensalasana",
   },
   {
     username: "Testinainen",
     name: "Nainen",
-    password: "Testinaisensalasana"
+    password: "Testinaisensalasana",
   },
   {
     username: "Testimuu",
     name: "Muu",
-    password: "Testimuunsalasana"
-  }
+    password: "Testimuunsalasana",
+  },
 ]
 
-
-module.exports = { 
-  listOfTestUsers, 
-  listOfLoginTestUsers 
+module.exports = {
+  listOfTestUsers,
+  listOfLoginTestUsers,
 }

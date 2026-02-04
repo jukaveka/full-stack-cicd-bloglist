@@ -34,7 +34,7 @@ describe("With initial test user in database", () => {
       const validUser = {
         username: "tomtailor",
         name: "tom",
-        password: "seunohdettutom"
+        password: "seunohdettutom",
       }
 
       const addedUser = await api
@@ -44,9 +44,12 @@ describe("With initial test user in database", () => {
         .expect("Content-Type", /application\/json/)
 
       const usersAfterRequest = await helper.usersInDb()
-      assert.strictEqual(usersAfterRequest.length, usersBeforeRequest.length + 1)
+      assert.strictEqual(
+        usersAfterRequest.length,
+        usersBeforeRequest.length + 1
+      )
 
-      const usernames = usersAfterRequest.map(user => user.username)
+      const usernames = usersAfterRequest.map((user) => user.username)
       assert(usernames.includes(validUser.username))
     })
 
@@ -56,7 +59,7 @@ describe("With initial test user in database", () => {
       const userWithInvalidUsername = {
         username: "to",
         name: "Tom",
-        password: "seunohdettutom"
+        password: "seunohdettutom",
       }
 
       const response = await api
@@ -68,7 +71,9 @@ describe("With initial test user in database", () => {
       const usersAfterRequest = await helper.usersInDb()
       assert.strictEqual(usersAfterRequest.length, usersBeforeRequest.length)
 
-      assert(response.error.text.includes("Username must be at least 3 characters"))
+      assert(
+        response.error.text.includes("Username must be at least 3 characters")
+      )
     })
 
     test("fails with status 400 if password is under 3 characters", async () => {
@@ -77,7 +82,7 @@ describe("With initial test user in database", () => {
       const userWithInvalidPassword = {
         username: "Testiorava",
         name: "Orava",
-        password: "ti"
+        password: "ti",
       }
 
       const response = await api
@@ -89,7 +94,9 @@ describe("With initial test user in database", () => {
       const usersAfterRequest = await helper.usersInDb()
       assert.strictEqual(usersAfterRequest.length, usersBeforeRequest.length)
 
-      assert(response.error.text.includes("Password must be at least 3 characters"))
+      assert(
+        response.error.text.includes("Password must be at least 3 characters")
+      )
     })
 
     test("fails with status 400 if username already exists", async () => {
@@ -98,7 +105,7 @@ describe("With initial test user in database", () => {
       const userWIthExistingUsername = {
         username: "Testimies",
         name: "Mies",
-        password: "Testimiehensalasana"
+        password: "Testimiehensalasana",
       }
 
       await api

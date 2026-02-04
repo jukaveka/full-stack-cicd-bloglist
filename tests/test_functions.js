@@ -4,7 +4,12 @@ const tokenService = require("../services/tokenService")
 const hashUtil = require("../utils/hash")
 
 const nonExistingId = async () => {
-  const blog = new Blog({ title: "Temp title", author: "Temp author", url: "Temp URL", likes: 0 })
+  const blog = new Blog({
+    title: "Temp title",
+    author: "Temp author",
+    url: "Temp URL",
+    likes: 0,
+  })
   await blog.save()
   await blog.deleteOne()
 
@@ -14,7 +19,7 @@ const nonExistingId = async () => {
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
 
-  return blogs.map(blog => blog.toJSON())
+  return blogs.map((blog) => blog.toJSON())
 }
 
 const getSingleTestBlog = async () => {
@@ -26,7 +31,7 @@ const getSingleTestBlog = async () => {
 const usersInDb = async () => {
   const users = await User.find({})
 
-  return users.map(user => user.toJSON())
+  return users.map((user) => user.toJSON())
 }
 
 const getValidUserId = async () => {
@@ -50,13 +55,17 @@ const decodeTestUserToken = (token) => {
 }
 
 const generateHashForUser = async (testUserObject) => {
-  testUserObject.passwordHash = await hashUtil.generatePasswordHash(testUserObject.password)
+  testUserObject.passwordHash = await hashUtil.generatePasswordHash(
+    testUserObject.password
+  )
 
   return testUserObject
 }
 
 const addHashedPasswordsToUsers = async (testUserArray) => {
-  const promiseArray = testUserArray.map(testUser => generateHashForUser(testUser))
+  const promiseArray = testUserArray.map((testUser) =>
+    generateHashForUser(testUser)
+  )
 
   return await Promise.all(promiseArray)
 }
@@ -70,5 +79,5 @@ module.exports = {
   addHashedPasswordsToUsers,
   getSingleTestUser,
   generateTestToken,
-  decodeTestUserToken
+  decodeTestUserToken,
 }

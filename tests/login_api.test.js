@@ -14,7 +14,9 @@ describe("With few test users in database", () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
-    const testUsers = await helper.addHashedPasswordsToUsers(testUserData.listOfLoginTestUsers)
+    const testUsers = await helper.addHashedPasswordsToUsers(
+      testUserData.listOfLoginTestUsers
+    )
 
     await User.insertMany(testUsers)
   })
@@ -23,7 +25,7 @@ describe("With few test users in database", () => {
     test("succeeds with valid username and password", async () => {
       const testUserCredentials = {
         username: testUserData.listOfLoginTestUsers[0].username,
-        password: testUserData.listOfLoginTestUsers[0].password
+        password: testUserData.listOfLoginTestUsers[0].password,
       }
 
       const response = await api
@@ -39,6 +41,6 @@ describe("With few test users in database", () => {
   })
 })
 
-after( async () => {
+after(async () => {
   mongoose.connection.close()
 })

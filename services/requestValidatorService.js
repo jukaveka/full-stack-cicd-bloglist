@@ -8,7 +8,7 @@ const generateInvalidRequestObject = (status, message) => {
   return {
     invalidRequest: true,
     status: status,
-    error: message
+    error: message,
   }
 }
 
@@ -18,5 +18,5 @@ const generateValidRequestObject = () => {
 module.exports = {
   requestIdIsInvalid,
   generateInvalidRequestObject,
-  generateValidRequestObject
+  generateValidRequestObject,
 }

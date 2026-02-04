@@ -8,10 +8,14 @@ userRouter.get("/", async (request, response) => {
 })
 
 userRouter.post("/", async (request, response, next) => {
-  const validatedRequest = await userService.validateUserPostRequest(request.body)
+  const validatedRequest = await userService.validateUserPostRequest(
+    request.body
+  )
 
   if (validatedRequest.invalidRequest) {
-    return response.status(validatedRequest.status).json({ error: validatedRequest.error })
+    return response
+      .status(validatedRequest.status)
+      .json({ error: validatedRequest.error })
   }
 
   const newUser = await userService.generateNewUser(request.body)

@@ -10,17 +10,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          persist-credentials: false
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+
       - name: Install dependencies
         run: |
           npm install
           cd frontend/ && npm install
           cd ..
-      - name: Lint UI
+
+      - name: Lint client
         run: npm run lint:ui
-      - name: Build UI
+
+      - name: Build client
         run: npm run build:ui
-      - name: Test UI
+
+      - name: Test client
         run: npm run test:ui
+
+      - name: Lint server
+        uses: creyD/prettier_action@v4.6
+        with:
+          prettier_options: "--check "
+          github_token: ${{ secrets.GITHUB_TOKEN }}

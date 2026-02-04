@@ -11,5 +11,5 @@ const clearBlogs = async () => {
 
 module.exports = {
   clearUsers,
-  clearBlogs
+  clearBlogs,
 }
