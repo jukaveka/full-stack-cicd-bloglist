@@ -28,12 +28,6 @@ jobs:
       - name: Lint client
         run: npm run lint:ui
 
-      - name: Build client
-        run: npm run build:ui
-
-      - name: Test client
-        run: npm run test:ui
-
       - name: Lint server
         uses: creyD/prettier_action@v4.6
         with:
@@ -41,3 +35,9 @@ jobs:
           no_commit: True
           prettier_options: --check . --ignore-path ./.prettierignore --config ./.prettierrc
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build client
+        run: npm run build:ui
+
+      - name: Test client
+        run: npm run test:ui
