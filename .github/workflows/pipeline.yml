@@ -41,3 +41,6 @@ jobs:
 
       - name: Test client
         run: npm run test:ui
+
+      - name: Test server
+        run: npm test
