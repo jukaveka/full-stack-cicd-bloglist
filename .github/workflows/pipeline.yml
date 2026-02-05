@@ -35,8 +35,6 @@ jobs:
         run: npm run test:ui
 
       - name: Lint server
-        uses: creyD/prettier_action@v4.6
+      - uses: actionsx/prettier@v2
         with:
-          dry: True
-          prettier_options: --check --ignore-path .prettierignore --config .prettierrc
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          args: --check . --ignore-path .prettierignore --config .prettierrc
