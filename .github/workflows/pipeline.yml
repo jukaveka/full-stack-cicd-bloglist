@@ -34,7 +34,6 @@ jobs:
       - name: Test client
         run: npm run test:ui
 
-      - name: Lint server
       - uses: actionsx/prettier@v2
         with:
           args: --check . --ignore-path .prettierignore --config .prettierrc
