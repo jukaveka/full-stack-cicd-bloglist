@@ -33,6 +33,7 @@ jobs:
         with:
           dry: True
           no_commit: True
+          clean_node_folder: False
           prettier_options: --check . --ignore-path ./.prettierignore --config ./.prettierrc
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
