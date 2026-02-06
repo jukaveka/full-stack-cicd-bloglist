@@ -47,4 +47,5 @@ jobs:
         run: |
           touch .env
           echo VAR=${{ secrets.TEST_SECRET }}
+          echo VAR=${{ secrets.TEST_SECRET }} >> .env
           cat .env
