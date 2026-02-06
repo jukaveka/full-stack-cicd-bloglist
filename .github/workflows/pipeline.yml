@@ -46,5 +46,7 @@ jobs:
       - name: Test server
         run: |
           touch .env
-          echo ${{ secrets.TEST_DATABASE_CRENDETIALS }} >> .env
+          echo ${{ secrets.ENV_FILE }} >> .env
           cat .env
+          npm run start:test
+          npm test
