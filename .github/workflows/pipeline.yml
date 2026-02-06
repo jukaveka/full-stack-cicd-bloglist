@@ -46,6 +46,6 @@ jobs:
       - name: Test server
         run: |
           touch .env
-          echo VAR=${{ secrets.TEST_SECRET }}
           echo VAR=${{ secrets.TEST_SECRET }} >> .env
+          echo NIIJOO="joonii" >> .env
           cat .env
