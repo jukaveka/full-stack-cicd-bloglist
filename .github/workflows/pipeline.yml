@@ -46,6 +46,6 @@ jobs:
       - name: Test server
         run: |
           touch .env
-          echo VAR=${{ secrets.TEST_SECRET }} >> .env
-          echo NIIJOO="joonii" >> .env
+          echo TEST_MONGODB_URI=${{ secrets.TEST_DATABASE_CRENDETIALS }} >> .env
           cat .env
+          npm test
