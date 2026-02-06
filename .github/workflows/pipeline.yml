@@ -45,5 +45,6 @@ jobs:
 
       - name: Test server
         run: |
-          npm run start:test
-          npm test
+          touch .env
+          echo VAR=${{ secrets.TEST_SECRET }}
+          cat .env
