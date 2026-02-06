@@ -48,4 +48,5 @@ jobs:
           touch .env
           echo TEST_MONGODB_URI=${{ secrets.TEST_DATABASE_CRENDETIALS }} >> .env
           cat .env
+          npm run start:test
           npm test
