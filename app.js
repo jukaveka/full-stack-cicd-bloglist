@@ -11,6 +11,8 @@ app.use(express.json())
 app.use(express.static("frontend/dist"))
 
 const mongoUrl = config.MONGODB_URI
+console.log(typeof config.MONGODB_URI)
+console.log(typeof mongoUrl)
 mongoose.connect(mongoUrl)
 
 app.use(express.json())

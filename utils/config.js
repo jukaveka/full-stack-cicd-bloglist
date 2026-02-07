@@ -2,13 +2,17 @@ require("dotenv").config()
 
 const getDatabaseURI = (nodeEnv) => {
   if (nodeEnv === "test") {
+    console.log("test environment")
     return process.env.TEST_MONGODB_URI
   } else if (nodeEnv === "development") {
+    console.log("dev environment")
     return process.env.DEV_MONGODB_URI
   } else if (nodeEnv === "production") {
+    console.log("prod environment")
     return process.env.MONGODB_URI
   }
 
+  console.log("no environment")
   return 0
 }
 
