@@ -48,6 +48,7 @@ jobs:
           touch .env
           echo TEST_MONGODB_URI=${{ secrets.TEST_DATABASE_CREDENTIALS }} >> .env
           echo PORT=${{ secrets.TEST_DATABASE_PORT }} >> .env
+          echo TEST_VAR=‰{{ secrets.TEST_SECRET }} >> .env
           cat .env
           npm run start:test
           npm test
