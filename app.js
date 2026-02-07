@@ -10,11 +10,9 @@ const app = express()
 app.use(express.json())
 app.use(express.static("frontend/dist"))
 
-const mongoUrl = config.MONGODB_URI
 console.log("TEST_VAR", config.TEST_VAR, typeof config.TEST_VAR)
-console.log(typeof config.MONGODB_URI)
-console.log(typeof mongoUrl)
-mongoose.connect(mongoUrl)
+console.log("MONGODB_URI", typeof config.MONGODB_URI)
+mongoose.connect(config.MONGODB_URI)
 
 app.use(express.json())
 app.use(middleware.tokenExtractor)
