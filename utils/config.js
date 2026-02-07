@@ -19,6 +19,7 @@ const getDatabaseURI = (nodeEnv) => {
 
 const PORT = process.env.PORT
 const MONGODB_URI = getDatabaseURI(process.env.NODE_ENV)
+console.log("Config file MONGODB_URi", typeof MONGODB_URI)
 const TEST_VAR = process.env.TEST_VAR
 
 module.exports = { PORT, MONGODB_URI, TEST_VAR }
