@@ -4,6 +4,7 @@ const getDatabaseURI = (nodeEnv) => {
   if (nodeEnv === "test") {
     console.log("test environment")
     console.log(process.env.TEST_VAR)
+    console.log("env function MONGODB_URI", typeof process.env.TEST_MONGODB_URI)
     return process.env.TEST_MONGODB_URI
   } else if (nodeEnv === "development") {
     console.log("dev environment")
