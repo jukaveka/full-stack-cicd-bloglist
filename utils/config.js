@@ -19,5 +19,6 @@ const getDatabaseURI = (nodeEnv) => {
 
 const PORT = process.env.PORT
 const MONGODB_URI = getDatabaseURI(process.env.NODE_ENV)
+const TEST_VAR = process.env.TEST_VAR
 
-module.exports = { PORT, MONGODB_URI }
+module.exports = { PORT, MONGODB_URI, TEST_VAR }
