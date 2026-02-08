@@ -45,6 +45,6 @@ jobs:
 
       - name: Test server
         env:
-          MONGODB_URI: ${{ secrets.TEST_DATABASE_CREDENTIALS }}
+          TEST_MONGODB_URI: ${{ secrets.TEST_DATABASE_CREDENTIALS }}
           PORT: ${{ secrets.TEST_DATABASE_PORT }}
         run: npm run ci:test
