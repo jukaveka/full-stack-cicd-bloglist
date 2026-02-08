@@ -10,7 +10,6 @@ const app = express()
 app.use(express.json())
 app.use(express.static("frontend/dist"))
 
-console.log(config.MONGODB_URI.substring(0, 14))
 mongoose.connect(config.MONGODB_URI)
 
 app.use(express.json())

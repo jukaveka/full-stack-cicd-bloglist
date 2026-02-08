@@ -45,7 +45,7 @@ jobs:
 
       - name: Test server
         env:
-          TEST_MONGODB_URI: ${{ secrets.TEST_SECRET }}
+          TEST_MONGODB_URI: ${{ secrets.TEST_DATABASE_CREDENTIALS }}
         run: |
           echo PORT=${{ secrets.TEST_DATABASE_PORT }} >> .env
           cat .env
