@@ -10,8 +10,7 @@ const app = express()
 app.use(express.json())
 app.use(express.static("frontend/dist"))
 
-console.log("TEST_VAR", config.TEST_VAR, typeof config.TEST_VAR)
-console.log("MONGODB_URI", typeof config.MONGODB_URI)
+console.log(config.MONGODB_URI.substring(0, 14))
 mongoose.connect(config.MONGODB_URI)
 
 app.use(express.json())
