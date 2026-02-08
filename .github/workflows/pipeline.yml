@@ -47,4 +47,5 @@ jobs:
         env:
           TEST_MONGODB_URI: ${{ secrets.TEST_DATABASE_CREDENTIALS }}
           PORT: ${{ secrets.TEST_DATABASE_PORT }}
+          SECRET: ${{ secrets.TOKEN_SECRET }}
         run: npm test
