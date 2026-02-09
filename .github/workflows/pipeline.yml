@@ -53,6 +53,7 @@ jobs:
       - name: Test end-to-end
         run: |
           cd e2e-tests/
+          npm install
           npx install playwright --with-deps
           npm test
           cd ..
