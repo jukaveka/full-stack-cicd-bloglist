@@ -58,7 +58,7 @@ jobs:
           npx playwright install --with-deps
       
       - name: Test end-to-end
-        run: npm test
+        run: npm test:e2e
 
       - name: Upload end-to-end testing report
         uses: actions/upload-artifact@v4
