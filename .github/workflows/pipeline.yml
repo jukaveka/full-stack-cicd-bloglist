@@ -24,6 +24,8 @@ jobs:
           npm install
           cd frontend/ && npm install
           cd ..
+          cd e2e/ && npm install
+          cd ..
 
       - name: Lint client
         run: npm run lint:ui
@@ -49,11 +51,14 @@ jobs:
           PORT: ${{ secrets.TEST_DATABASE_PORT }}
           SECRET: ${{ secrets.TOKEN_SECRET }}
         run: npm test
+
+      - name: Install end-to-end browsers
+        run: |
+          cd e2e-tests/
+          npx playwright install --with-deps
       
       - name: Test end-to-end
-        run: |
-          npx install playwright --with-deps
-          npx playwright test
+        run: npm test
 
       - name: Upload end-to-end testing report
         uses: actions/upload-artifact@v4
