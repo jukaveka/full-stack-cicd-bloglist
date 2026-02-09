@@ -23,8 +23,7 @@ jobs:
         run: |
           npm install
           cd frontend/ && npm install
-          cd ..
-          cd e2e/ && npm install
+          cd ../e2e-tests/ && npm install
           cd ..
 
       - name: Lint client
