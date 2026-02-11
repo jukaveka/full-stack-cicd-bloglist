@@ -1,0 +1,69 @@
+name: CI/CD pipeline
+
+on:
+  push:
+    branches:
+      - cicd-pipeline
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    env:
+      TEST_MONGODB_URI: ${{ secrets.TEST_DATABASE_CREDENTIALS }}
+      PORT: ${{ secrets.TEST_DATABASE_PORT }}
+      SECRET: ${{ secrets.TOKEN_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          npm install
+          cd frontend/ && npm install
+          cd ../e2e-tests/ && npm install
+          cd ..
+
+      - name: Lint client
+        run: npm run lint:ui
+
+      - name: Lint server
+        uses: creyD/prettier_action@v4.6
+        with:
+          dry: True
+          no_commit: True
+          clean_node_folder: False
+          prettier_options: --check . --ignore-path ./.prettierignore --config ./.prettierrc
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build client
+        run: npm run build:ui
+
+      - name: Test client
+        run: npm run test:ui
+
+      - name: Test server
+        run: npm test
+
+      - name: Install end-to-end browsers
+        run: |
+          cd e2e-tests/
+          npx playwright install --with-deps
+      
+      - name: Test end-to-end
+        run: |
+          npm run start:test & npm run test:e2e
+
+      - name: Upload end-to-end testing report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: e2e-tests/playwright-report/
+          retention-days: 30

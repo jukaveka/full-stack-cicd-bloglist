@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "run": "NODE_ENV=production node index.js",
+    "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development node --watch index.js",
-    "test": "NODE_ENV=test node --test",
+    "test": "NODE_ENV=test node --test --test-concurrency=1",
+    "test:ui": "cd frontend && npm test",
+    "test:e2e": "cd e2e-tests && npm test",
     "start:test": "NODE_ENV=test node index.js",
-    "build:ui": "cd frontend/ && rm -rf dist && npm run build"
+    "build:ui": "cd frontend/ && rm -rf dist && npm run build",
+    "lint:ui": "cd frontend/ && npm run lint"
   },
   "author": "Juho Kavekari",
   "license": "MIT",
@@ -22,6 +25,6 @@
     "supertest": "^7.1.0"
   },
   "devDependencies": {
-    "prettier": "3.6.2"
+    "prettier": "3.8.1"
   }
 }

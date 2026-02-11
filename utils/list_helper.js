@@ -9,26 +9,17 @@ const totalLikes = (blogs) => {
     return totalCount + blog.likes
   }
 
-  return blogs.length === 0
-    ? 0
-    : blogs.reduce(reducer, 0)
+  return blogs.length === 0 ? 0 : blogs.reduce(reducer, 0)
 }
 
 const favouriteBlog = (blogs) => {
   const reducer = (mostLikedBlog, blog) => {
-    return mostLikedBlog.likes >= blog.likes
-      ? mostLikedBlog
-      : blog
+    return mostLikedBlog.likes >= blog.likes ? mostLikedBlog : blog
   }
 
-  return blogs.length === 0
-    ? 0
-    : blogs.reduce(reducer, 0)
+  return blogs.length === 0 ? 0 : blogs.reduce(reducer, 0)
 }
-const findAuthorWithMostBlogs = (blogs) => {
-
-}
-
+const findAuthorWithMostBlogs = (blogs) => {}
 
 const mostBlogs = (blogs) => {
   if (blogs.length === 0) {
@@ -41,15 +32,13 @@ const mostBlogs = (blogs) => {
 
   const authorsBlogCount = authors.map((author) => {
     return {
-      "author": author,
-      "blogs": groupedAuthors[author].length
+      author: author,
+      blogs: groupedAuthors[author].length,
     }
   })
 
   const authorWithMostBlogs = authorsBlogCount.reduce((topAuthor, author) => {
-    return topAuthor.blogs >= author.blogs
-      ? topAuthor
-      : author
+    return topAuthor.blogs >= author.blogs ? topAuthor : author
   })
 
   return authorWithMostBlogs
@@ -71,16 +60,16 @@ const mostLikes = (blogs) => {
       .reduce((totalBlogLikes, blogLikes) => totalBlogLikes + blogLikes, 0)
 
     return {
-      "author": author,
-      "likes": authorsBlogsLikes
+      author: author,
+      likes: authorsBlogsLikes,
     }
   })
 
-  const authorWithMostBlogLikes = authorsBlogLikeCount.reduce((topAuthor, author) => {
-    return topAuthor.likes >= author.likes
-      ? topAuthor
-      : author
-  })
+  const authorWithMostBlogLikes = authorsBlogLikeCount.reduce(
+    (topAuthor, author) => {
+      return topAuthor.likes >= author.likes ? topAuthor : author
+    }
+  )
 
   return authorWithMostBlogLikes
 }

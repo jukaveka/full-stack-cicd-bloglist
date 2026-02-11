@@ -3,8 +3,10 @@ const assert = require("node:assert")
 const app = require("../app")
 const mongoose = require("mongoose")
 const supertest = require("supertest")
+
 const Blog = require("../models/blog")
 const User = require("../models/user")
+
 const testBlogData = require("./blog_test_data")
 const testUserData = require("./user_test_data")
 const helper = require("./test_functions")
@@ -18,7 +20,7 @@ describe("With initial test blogs inserted", () => {
 
     await User.insertMany(testUserData.listOfTestUsers)
     const insertedBlogs = await Blog.insertMany(testBlogData.listWithManyBlogs)
-    const insertedBlogIds = insertedBlogs.map(blog => blog._id.toString())
+    const insertedBlogIds = insertedBlogs.map((blog) => blog._id.toString())
 
     const user = await User.findOne({})
 
@@ -33,7 +35,10 @@ describe("With initial test blogs inserted", () => {
         .expect(200)
         .expect("Content-Type", /application\/json/)
 
-      assert.strictEqual(allBlogs.body.length, testBlogData.listWithManyBlogs.length)
+      assert.strictEqual(
+        allBlogs.body.length,
+        testBlogData.listWithManyBlogs.length
+      )
     })
 
     test("uses id as identifier instead of _id", async () => {
@@ -42,7 +47,7 @@ describe("With initial test blogs inserted", () => {
         .expect(200)
         .expect("Content-Type", /application\/json/)
 
-      const blogKeys = allBlogs.body.map(blog => Object.keys(blog))
+      const blogKeys = allBlogs.body.map((blog) => Object.keys(blog))
 
       assert(blogKeys[0].includes("id"))
       assert(!blogKeys[0].includes("_id"))
@@ -62,9 +67,12 @@ describe("With initial test blogs inserted", () => {
         .expect(201)
 
       const allBlogs = await helper.blogsInDb()
-      assert.strictEqual(allBlogs.length, testBlogData.listWithManyBlogs.length + 1)
+      assert.strictEqual(
+        allBlogs.length,
+        testBlogData.listWithManyBlogs.length + 1
+      )
 
-      const blogTitles = allBlogs.map(blog => blog.title)
+      const blogTitles = allBlogs.map((blog) => blog.title)
       assert(blogTitles.includes(testBlog.title))
 
       assert.strictEqual(addedBlog.body.title, testBlog.title)
@@ -73,7 +81,10 @@ describe("With initial test blogs inserted", () => {
       assert.strictEqual(addedBlog.body.user._id, decodedToken.id)
 
       const userAfterRequest = await User.findById(testUser._id)
-      assert.strictEqual(userAfterRequest.blogs.length, testUser.blogs.length + 1)
+      assert.strictEqual(
+        userAfterRequest.blogs.length,
+        testUser.blogs.length + 1
+      )
     })
 
     test("corrects likes to 0 if none are given", async () => {
@@ -157,10 +168,16 @@ describe("With initial test blogs inserted", () => {
         .expect(204)
 
       const blogsAfterRequest = await helper.blogsInDb()
-      assert.strictEqual(blogsAfterRequest.length, blogsBeforeRequest.length - 1)
+      assert.strictEqual(
+        blogsAfterRequest.length,
+        blogsBeforeRequest.length - 1
+      )
 
       const userAfterRequest = await User.findById(testUser.id)
-      assert.strictEqual(userAfterRequest.blogs.length, userBlogsBeforeRequest.length - 1)
+      assert.strictEqual(
+        userAfterRequest.blogs.length,
+        userBlogsBeforeRequest.length - 1
+      )
       assert(!userAfterRequest.blogs.includes(testBlog.id))
     })
 
@@ -193,7 +210,9 @@ describe("With initial test blogs inserted", () => {
 
       const testBlog = await helper.getSingleTestBlog()
       const authorizedUser = await User.findById(testBlog.user)
-      const unauthorizedUser = await User.findOne({ _id: { $ne: authorizedUser } })
+      const unauthorizedUser = await User.findOne({
+        _id: { $ne: authorizedUser },
+      })
       const unauthorizedToken = helper.generateTestToken(unauthorizedUser)
 
       await api

@@ -28,7 +28,6 @@ describe("Total likes", () => {
 
     assert.strictEqual(result, 36)
   })
-
 })
 
 describe("Favourite blog", () => {
@@ -67,7 +66,7 @@ describe("Author with most blogs", () => {
   test("is one with array with one blog", () => {
     const correctResult = {
       author: "Edsger W. Dijkstra",
-      blogs: 1
+      blogs: 1,
     }
     const result = listHelper.mostBlogs(testBlogs.listWithOneBlog)
 
@@ -77,7 +76,7 @@ describe("Author with most blogs", () => {
   test("is author with most blogs in array with multiple blogs", () => {
     const correctResult = {
       author: "Robert C. Martin",
-      blogs: 3
+      blogs: 3,
     }
 
     const result = listHelper.mostBlogs(testBlogs.listWithManyBlogs)
@@ -88,7 +87,7 @@ describe("Author with most blogs", () => {
   test("is first appearing author with most blogs in array with multiple top bloggers", () => {
     const correctResult = {
       author: "Edsger W. Dijkstra",
-      blogs: 2
+      blogs: 2,
     }
 
     const result = listHelper.mostBlogs(testBlogs.listWithTiedMostBlogs)
@@ -107,7 +106,7 @@ describe("Author with most blog likes", () => {
   test("matches likes of only blog when array has one blog", () => {
     const correctResult = {
       author: "Edsger W. Dijkstra",
-      likes: 5
+      likes: 5,
     }
     const result = listHelper.mostLikes(testBlogs.listWithOneBlog)
 
@@ -117,7 +116,7 @@ describe("Author with most blog likes", () => {
   test("matches likes of author with most likes when array has multiple blogs", () => {
     const correctResult = {
       author: "Edsger W. Dijkstra",
-      likes: 17
+      likes: 17,
     }
     const result = listHelper.mostLikes(testBlogs.listWithManyBlogs)
 
@@ -127,10 +126,12 @@ describe("Author with most blog likes", () => {
   test("matches likes of first appearing author with most likes when array has multiple authors with most likes", () => {
     const correctResult = {
       author: "Edsger W. Dijkstra",
-      likes: 17
+      likes: 17,
     }
-    
-    const result = listHelper.mostLikes(testBlogs.listWithTiedMostLikesForAuthor)
+
+    const result = listHelper.mostLikes(
+      testBlogs.listWithTiedMostLikesForAuthor
+    )
 
     assert.deepStrictEqual(result, correctResult)
   })

@@ -1,3 +1,10 @@
 # Ignore artifacts:
 build
 coverage
+frontend
+.github
+frontend
+e2e-tests
+
+# Ignore all HTML files:
+**/*.html

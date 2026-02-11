@@ -1,5 +1,5 @@
-const express = require('express')
-const mongoose = require('mongoose')
+const express = require("express")
+const mongoose = require("mongoose")
 const config = require("./utils/config")
 const middleware = require("./utils/middleware")
 const blogRouter = require("./controllers/blog")
@@ -10,8 +10,7 @@ const app = express()
 app.use(express.json())
 app.use(express.static("frontend/dist"))
 
-const mongoUrl = config.MONGODB_URI
-mongoose.connect(mongoUrl)
+mongoose.connect(config.MONGODB_URI)
 
 app.use(express.json())
 app.use(middleware.tokenExtractor)
