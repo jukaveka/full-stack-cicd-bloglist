@@ -38,6 +38,7 @@ jobs:
           SKIP_TAG: ${{ contains(env.COMMIT_MESSGES, env.SKIP_STRING) }}
         run: |
           echo "$SKIP_TAG"
+          echo "joo"
           echo "skip_release=$SKIP_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
