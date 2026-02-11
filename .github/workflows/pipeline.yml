@@ -67,3 +67,12 @@ jobs:
           name: playwright-report
           path: e2e-tests/playwright-report/
           retention-days: 30
+
+  deploy_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy application to production
+        env:
+          DEPLOY_HOOK: ${{ secrets.DEPLOY_HOOK }}
+        run: curl "$DEPLOY_HOOK"
