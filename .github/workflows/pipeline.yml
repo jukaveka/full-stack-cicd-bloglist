@@ -93,7 +93,7 @@ jobs:
   deploy_and_release:
     needs: [build_and_test]
     runs-on: ubuntu-latest
-    if: ${{ (needs.build_and_test.outputs.skip_release == 'false') && (github.event_name == 'push')}}
+    if: ${{ (needs.build_and_test.outputs.skip_release == 'false') && (github.event_name == 'push') && (github.ref_name == 'main') }}
     steps:
 
       - uses: actions/checkout@v4
