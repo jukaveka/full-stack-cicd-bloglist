@@ -4,14 +4,27 @@ on:
   push:
     branches:
       - cicd-pipeline
+      - main
+  pull_request:
+    branches: main
+    types: [opened, synchronize]
+
+env:
+  COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ', ') }}
+  SKIP_STRING: "#skip"
 
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
+
+    outputs:
+      skip_release: ${{ steps.deploy_status.outputs.skip_release }}
+
     env:
       TEST_MONGODB_URI: ${{ secrets.TEST_DATABASE_CREDENTIALS }}
       PORT: ${{ secrets.TEST_DATABASE_PORT }}
       SECRET: ${{ secrets.TOKEN_SECRET }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,6 +35,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      - id: deploy_status
+        name: Check for skip tag in commit messages
+        env:
+          SKIP_TAG: ${{ contains(env.COMMIT_MESSAGES, env.SKIP_STRING) }}
+        run: |
+          echo "$SKIP_TAG"
+          echo "joo"
+          echo "skip_release=$SKIP_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         run: |
@@ -67,3 +89,22 @@ jobs:
           name: playwright-report
           path: e2e-tests/playwright-report/
           retention-days: 30
+
+  deploy_and_release:
+    needs: [build_and_test]
+    runs-on: ubuntu-latest
+    if: ${{ (needs.build_and_test.outputs.skip_release == 'false') && (github.event_name == 'push') && (github.ref_name == 'main') }}
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Deploy application to production
+        env:
+          DEPLOY_HOOK: ${{ secrets.DEPLOY_HOOK }}
+        run: curl "$DEPLOY_HOOK"
+
+      - name: Bump version tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+        uses: anothrNick/github-tag-action@1.75.0
