@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - cicd-pipeline
+      - main
+  pull_request:
+    branches: main
+    types: [opened, synchronize]
 
 env:
   COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ', ') }}
