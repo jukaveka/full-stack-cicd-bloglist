@@ -35,7 +35,7 @@ jobs:
       - id: deploy_status
         name: Check for skip tag in commit messages
         env:
-          SKIP_TAG: ${{ contains(env.COMMIT_MESSGES, env.SKIP_STRING) }}
+          SKIP_TAG: ${{ contains(env.COMMIT_MESSAGES, env.SKIP_STRING) }}
         run: |
           echo "$SKIP_TAG"
           echo "joo"
