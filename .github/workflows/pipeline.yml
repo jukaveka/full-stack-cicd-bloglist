@@ -95,8 +95,16 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ (needs.build_and_test.outputs.skip_release == 'false') && (github.event_name == 'push')}}
     steps:
+
       - uses: actions/checkout@v4
+
       - name: Deploy application to production
         env:
           DEPLOY_HOOK: ${{ secrets.DEPLOY_HOOK }}
         run: curl "$DEPLOY_HOOK"
+
+      - name: Bump version tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+        uses: anothrNick/github-tag-action@1.75.0
