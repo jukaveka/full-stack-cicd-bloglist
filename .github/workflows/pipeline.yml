@@ -119,7 +119,8 @@ jobs:
 
     env:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
-      DEPLOYMENT_STATUS: ${{ needs.build_and_test.result }}
+      DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
+      EVENT_DETAILS: ${{ github.event }}
 
     if: ${{ always() }}
 
@@ -129,6 +130,7 @@ jobs:
           echo "$BUILD_STATUS"
           echo "$DEPLOYMENT_STATUS"
           echo "$EVENT_TYPE"
+          echo "$EVENT_DETAILS"
 
       - name: Discord notification
         env:
