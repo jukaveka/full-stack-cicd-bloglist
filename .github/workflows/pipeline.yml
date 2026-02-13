@@ -12,6 +12,7 @@ on:
 env:
   COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ', ') }}
   SKIP_STRING: "#skip"
+  EVENT_TYPE: ${{ github.event_name }}
 
 jobs:
   build_and_test:
@@ -116,13 +117,23 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      BUILD_STATUS: ${{ needs.build_and_test.result }}
+      DEPLOYMENT_STATUS: ${{ needs.build_and_test.result }}
+
     if: ${{ always() }}
 
     steps:
+      - name: Check env variables
+        run: |
+          echo "$BUILD_STATUS"
+          echo "$DEPLOYMENT_STATUS"
+          echo "$EVENT_TYPE"
+
       - name: Discord notification
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
             TEST_VAR: "Some text about build status"
         uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
         with:
-          args: "New build done ${{ env.TEST_VAR }}"
+          args: "Build was ${{ env.BUILD_STATUS}}. Deployment was ${{ env.DEPLOYMENT_STATUS }}."
