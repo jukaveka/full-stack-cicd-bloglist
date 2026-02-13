@@ -147,25 +147,22 @@ jobs:
         if: ${{ env.EVENT_TYPE == 'push' }}
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-            DISCORD_EMBED: '{
-              "embeds": [(
-                "fields": [
-                  {
-                    "name": "Build report"
-                  },
-                  {
-                    "name": "Commit"
-                    "value": "${{ env.EVENT_HEAD_COMMIT_URL }}"
-                  },
-                  {
-                    "name": "Build status",
-                    "value": "${{ env.BUILD_STATUS }}"
-                  },
-                  {
-                    "name": "Deployment status",
-                    "value": "${{ env.DEPLOYMENT_STATUS }}"
-                  }
-                ]
+            DISCORD_EMBED: '[(
+              "title": "Build report",
+              "fields": [
+                {
+                  "name": "Commit"
+                  "value": "committi"
+                },
+                {
+                  "name": "Build status",
+                  "value": "success"
+                },
+                {
+                  "name": "Deployment status",
+                  "value": "skipped"
+                }
+              ]
               )]
-              }'
+              '
         uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
