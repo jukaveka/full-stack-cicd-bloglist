@@ -120,17 +120,25 @@ jobs:
     env:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
-      EVENT_DETAILS: ${{ github.event }}
 
     if: ${{ always() }}
 
     steps:
       - name: Check env variables
+        env:
+          EVENT_AFTER_SHA: ${{ github.event.after }}
+          EVENT_BEFORE_SHA: ${{ github.event.before }}
+          EVENT_HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
+          EVENT_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+
         run: |
           echo "$BUILD_STATUS"
           echo "$DEPLOYMENT_STATUS"
           echo "$EVENT_TYPE"
-          echo "$EVENT_DETAILS"
+          echo "$EVENT_AFTER_SHA"
+          echo "$EVENT_BEFORE_SHA"
+          echo "$EVENT_HEAD_COMMIT_ID"
+          echo "$EVENT_HEAD_COMMIT_MESSAGE"
 
       - name: Discord notification
         env:
