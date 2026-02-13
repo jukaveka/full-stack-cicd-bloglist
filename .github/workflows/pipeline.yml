@@ -13,6 +13,7 @@ env:
   COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ', ') }}
   SKIP_STRING: "#skip"
   EVENT_TYPE: ${{ github.event_name }}
+  PRODUCTION_URL: ${{ vars.PRODUCTION_URL }}
 
 jobs:
   build_and_test:
@@ -141,9 +142,15 @@ jobs:
           echo "$EVENT_HEAD_COMMIT_MESSAGE"
 
       - name: Discord notification
+        if: ${{ env.EVENT_TYPE == 'push' }}
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-            TEST_VAR: "Some text about build status"
+            DISCORD_EMBED: '[(
+              "author": {
+                "name": "GitHub Actions",
+                "url": "https://github.com/jukaveka/full-stack-cicd-bloglist/actions"
+              },
+              "title": "Build report",
+              "color": "#71A9F7"
+              )]'
         uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
-        with:
-          args: "Build was ${{ env.BUILD_STATUS}}. Deployment was ${{ env.DEPLOYMENT_STATUS }}."
