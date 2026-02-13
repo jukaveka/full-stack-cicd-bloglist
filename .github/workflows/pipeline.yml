@@ -92,10 +92,12 @@ jobs:
 
   deploy_and_release:
     needs: [build_and_test]
-    runs-on: ubuntu-latest
-    if: ${{ (needs.build_and_test.outputs.skip_release == 'false') && (github.event_name == 'push') && (github.ref_name == 'main') }}
-    steps:
 
+    runs-on: ubuntu-latest
+
+    if: ${{ (needs.build_and_test.outputs.skip_release == 'false') && (github.event_name == 'push') && (github.ref_name == 'main') }}
+
+    steps:
       - uses: actions/checkout@v4
 
       - name: Deploy application to production
@@ -108,3 +110,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
         uses: anothrNick/github-tag-action@1.75.0
+
+  notify_result:
+    needs: [build_and_test, deploy_and_release]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Discord notification
+        env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+            TEST_VAR: "Some text about build status"
+        uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
+        with:
+          args: "New build done ${{ env.TEST_VAR }}"
