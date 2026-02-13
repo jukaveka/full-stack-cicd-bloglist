@@ -131,6 +131,7 @@ jobs:
           EVENT_BEFORE_SHA: ${{ github.event.before }}
           EVENT_HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
           EVENT_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          EVENT_HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
 
         run: |
           echo "$BUILD_STATUS"
@@ -140,6 +141,7 @@ jobs:
           echo "$EVENT_BEFORE_SHA"
           echo "$EVENT_HEAD_COMMIT_ID"
           echo "$EVENT_HEAD_COMMIT_MESSAGE"
+          echo "$EVENT_HEAD_COMMIT_URL"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
@@ -151,6 +153,20 @@ jobs:
                 "url": "https://github.com/jukaveka/full-stack-cicd-bloglist/actions"
               },
               "title": "Build report",
-              "color": "#71A9F7"
+              "color": "#71A9F7",
+              "fields": [
+                {
+                  "name": "Commit"
+                  "value": "${{ env.EVENT_HEAD_COMMIT_URL }}"
+                },
+                {
+                  "name": "Build status",
+                  "value": "${{ env.BUILD_STATUS }}"
+                },
+                {
+                  "name": "Deployment status",
+                  "value": "${{ env.DEPLOYMENT_STATUS }}"
+                }
+              ]
               )]'
         uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
