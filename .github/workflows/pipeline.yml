@@ -116,6 +116,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    if: ${{ always() }}
+
     steps:
       - name: Discord notification
         env:
