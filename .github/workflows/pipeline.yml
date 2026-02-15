@@ -147,7 +147,7 @@ jobs:
         if: ${{ env.EVENT_TYPE == 'push' }}
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-            DISCORD_EMBEDS: '[
+            DISCORD_EMBEDS: '[{
               "title": "Build report",
               "author": {
                 "name": "GitHub Actions",
@@ -168,6 +168,6 @@ jobs:
                   "value": "skipped"
                 }
               ]
-              ]
+              }]
               '
         uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
