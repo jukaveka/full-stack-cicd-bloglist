@@ -126,6 +126,7 @@ jobs:
       HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
       HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
+      REPOSITORY_URL: ${{ github.event.repository }}
 
 
     if: ${{ always() }}
@@ -138,7 +139,6 @@ jobs:
           EVENT_HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
           EVENT_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           EVENT_HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
-          EVENT_PAYLOAD: ${{ github.event.payload }}
 
         run: |
           echo "$BUILD_STATUS"
@@ -149,7 +149,7 @@ jobs:
           echo "$EVENT_HEAD_COMMIT_ID"
           echo "$EVENT_HEAD_COMMIT_MESSAGE"
           echo "$EVENT_HEAD_COMMIT_URL"
-          echo "$EVENT_PAYLOAD"
+          echo "$REPOSITORY_URL"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
