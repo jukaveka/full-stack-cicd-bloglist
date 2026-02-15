@@ -159,7 +159,7 @@ jobs:
               "fields": [
                 {
                   "name": "Commit",
-                  "value": "${{ env.HEAD_COMMIT_MESSAGE }}"
+                  "value": "${{ env.EVENT_HEAD_COMMIT_MESSAGE }} "
                 }
               ]
               }]
