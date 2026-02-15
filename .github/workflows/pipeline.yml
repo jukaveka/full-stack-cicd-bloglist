@@ -155,7 +155,7 @@ jobs:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
             DISCORD_EMBEDS: '[{
               "title": "Build report",
-              "url": "${{ env.HEAD_COMMIT_URL }}"
+              "url": "${{ env.HEAD_COMMIT_URL }}",
               "author": {
                 "name": "GitHub Actions",
                 "url": "https://github.com/jukaveka/full-stack-cicd-bloglist/actions",
