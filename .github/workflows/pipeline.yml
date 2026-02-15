@@ -140,6 +140,7 @@ jobs:
           EVENT_HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
           EVENT_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           EVENT_HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
+          ACTION_URL: "https://github.com/${{ env.REPOSITORY }}/actions/runs/${{ env.RUN_ID }}"
 
         run: |
           echo "$BUILD_STATUS"
@@ -152,6 +153,7 @@ jobs:
           echo "$EVENT_HEAD_COMMIT_URL"
           echo "$REPOSITORY"
           echo "$RUN_ID"
+          echo "$ACTION_URL"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
