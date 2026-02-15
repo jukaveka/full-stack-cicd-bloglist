@@ -159,7 +159,7 @@ jobs:
               "fields": [
                 {
                   "name": "Commit",
-                  "value": "Committi"
+                  "value": "${{ env.HEAD_COMMIT_MESSAGE }}"
                 }
               ]
               }]
