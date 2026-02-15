@@ -158,8 +158,8 @@ jobs:
               },
               "fields": [
                 {
-                  "name": "Commit",
-                  "value": ${{ env.EVENT_HEAD_COMMIT_MESSAGE }}
+                  "name": "Build status",
+                  "value": "${{ env.BUILD_STATUS }}"
                 }
               ]
               }]
