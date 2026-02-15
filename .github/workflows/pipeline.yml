@@ -126,7 +126,7 @@ jobs:
       HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
       HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
-      REPOSITORY_URL: ${{ github.event.repository.url }}
+      REPOSITORY_URL: ${{ github.repository }}
 
 
     if: ${{ always() }}
