@@ -127,7 +127,7 @@ jobs:
       HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
       HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
       REPOSITORY: ${{ github.repository }}
-      RUN_ID: ${{ github.event.id }}
+      ACTION_RUN_ID: ${{ github.event.id }}
 
 
     if: ${{ always() }}
@@ -151,7 +151,7 @@ jobs:
           echo "$EVENT_HEAD_COMMIT_MESSAGE"
           echo "$EVENT_HEAD_COMMIT_URL"
           echo "$REPOSITORY"
-          echo "$RUN_ID"
+          echo "$ACTION_RUN_ID"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
