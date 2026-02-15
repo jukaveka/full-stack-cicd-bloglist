@@ -123,6 +123,8 @@ jobs:
     env:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
+      HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+      HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
 
     if: ${{ always() }}
 
@@ -158,8 +160,23 @@ jobs:
               },
               "fields": [
                 {
+                  "name": "Commit",
+                  "value": "${{ env.HEAD_COMMIT_MESSAGE }}",
+                  "inline": true
+                },
+                {
+                  "name": "ID",
+                  "value": "${{ env.HEAD_COMMIT_ID }}",
+                  "inline": true
+                },
+                {
                   "name": "Build status",
                   "value": "${{ env.BUILD_STATUS }}"
+                },
+                {
+                  "name": "Deployment status",
+                  "value": "${{ env.DEPLOYMENT_STATUS }}",
+                  "inline": true
                 }
               ]
               }]
