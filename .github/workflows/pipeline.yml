@@ -13,7 +13,8 @@ env:
   COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ', ') }}
   SKIP_STRING: "#skip"
   EVENT_TYPE: ${{ github.event_name }}
-  PRODUCTION_URL: ${{ vars.PRODUCTION_URL }}
+  REPOSITORY: ${{ github.repository }}
+  RUN_ID: ${{ github.run_id }}
 
 jobs:
   build_and_test:
@@ -124,33 +125,17 @@ jobs:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
       HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-      HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
-      HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
-      REPOSITORY: ${{ github.repository }}
-      RUN_ID: ${{ github.run_id }}
-
+      ACTION_URL: "https://github.com/${{ env.REPOSITORY }}/actions/runs/${{ env.RUN_ID }}"
 
     if: ${{ always() }}
 
     steps:
       - name: Check env variables
-        env:
-          EVENT_AFTER_SHA: ${{ github.event.after }}
-          EVENT_BEFORE_SHA: ${{ github.event.before }}
-          EVENT_HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
-          EVENT_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-          EVENT_HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
-          ACTION_URL: "https://github.com/${{ env.REPOSITORY }}/actions/runs/${{ env.RUN_ID }}"
 
         run: |
           echo "$BUILD_STATUS"
           echo "$DEPLOYMENT_STATUS"
           echo "$EVENT_TYPE"
-          echo "$EVENT_AFTER_SHA"
-          echo "$EVENT_BEFORE_SHA"
-          echo "$EVENT_HEAD_COMMIT_ID"
-          echo "$EVENT_HEAD_COMMIT_MESSAGE"
-          echo "$EVENT_HEAD_COMMIT_URL"
           echo "$REPOSITORY"
           echo "$RUN_ID"
           echo "$ACTION_URL"
@@ -161,7 +146,7 @@ jobs:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
             DISCORD_EMBEDS: '[{
               "title": "Build report",
-              "url": "${{ env.HEAD_COMMIT_URL }}",
+              "url": "${{ env.ACTION_URL }}",
               "author": {
                 "name": "GitHub Actions",
                 "url": "https://github.com/jukaveka/full-stack-cicd-bloglist/actions",
