@@ -125,6 +125,8 @@ jobs:
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
       HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
+      HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
+
 
     if: ${{ always() }}
 
@@ -153,6 +155,7 @@ jobs:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
             DISCORD_EMBEDS: '[{
               "title": "Build report",
+              "url": "${{ env.HEAD_COMMIT_URL }}"
               "author": {
                 "name": "GitHub Actions",
                 "url": "https://github.com/jukaveka/full-stack-cicd-bloglist/actions",
@@ -162,16 +165,6 @@ jobs:
                 {
                   "name": "Type",
                   "value": "${{ env.EVENT_TYPE }}"
-                },
-                {
-                  "name": "Commit",
-                  "value": "${{ env.HEAD_COMMIT_MESSAGE }}",
-                  "inline": true
-                },
-                {
-                  "name": "ID",
-                  "value": "${{ env.HEAD_COMMIT_ID }}",
-                  "inline": true
                 },
                 {
                   "name": "Build status",
