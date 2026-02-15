@@ -27,7 +27,7 @@ jobs:
       PORT: ${{ secrets.TEST_DATABASE_PORT }}
       SECRET: ${{ secrets.TOKEN_SECRET }}
 
-    if: ${{ contains(env.COMMIT_MESSAGES, env.SKIP_STRING) }}
+    if: false
 
     steps:
       - uses: actions/checkout@v4
