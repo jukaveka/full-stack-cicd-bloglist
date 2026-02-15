@@ -127,7 +127,7 @@ jobs:
       HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
       HEAD_COMMIT_URL: ${{ github.event.head_commit.url }}
       REPOSITORY: ${{ github.repository }}
-      ACTION_RUN_ID: ${{ github.event.id }}
+      ACTION_RUN_ID: ${{ github.id }}
 
 
     if: ${{ always() }}
