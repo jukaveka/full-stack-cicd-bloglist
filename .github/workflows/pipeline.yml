@@ -13,8 +13,6 @@ env:
   COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ', ') }}
   SKIP_STRING: "#skip"
   EVENT_TYPE: ${{ github.event_name }}
-  REPOSITORY: ${{ github.repository }}
-  RUN_ID: ${{ github.run_id }}
 
 jobs:
   build_and_test:
@@ -125,7 +123,7 @@ jobs:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
       HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-      ACTION_URL: "https://github.com/${{ env.REPOSITORY }}/actions/runs/${{ env.RUN_ID }}"
+      ACTION_URL: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
     if: ${{ always() }}
 
