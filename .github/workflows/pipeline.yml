@@ -160,6 +160,10 @@ jobs:
               },
               "fields": [
                 {
+                  "name": "Type",
+                  "value": "${{ env.EVENT_TYPE }}"
+                }
+                {
                   "name": "Commit",
                   "value": "${{ env.HEAD_COMMIT_MESSAGE }}",
                   "inline": true
@@ -171,7 +175,8 @@ jobs:
                 },
                 {
                   "name": "Build status",
-                  "value": "${{ env.BUILD_STATUS }}"
+                  "value": "${{ env.BUILD_STATUS }}",
+                  "inline": true
                 },
                 {
                   "name": "Deployment status",
