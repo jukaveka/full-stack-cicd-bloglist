@@ -27,6 +27,8 @@ jobs:
       PORT: ${{ secrets.TEST_DATABASE_PORT }}
       SECRET: ${{ secrets.TOKEN_SECRET }}
 
+    if: ${{ contains(env.COMMIT_MESSAGES, env.SKIP_STRING) }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -153,21 +155,7 @@ jobs:
                 "name": "GitHub Actions",
                 "url": "https://github.com/jukaveka/full-stack-cicd-bloglist/actions",
                 "icon_url": "https://avatars.githubusercontent.com/u/44036562?s=200&v=4"
-              },
-              "fields": [
-                {
-                  "name": "Commit"
-                  "value": "committi"
-                },
-                {
-                  "name": "Build status",
-                  "value": "success"
-                },
-                {
-                  "name": "Deployment status",
-                  "value": "skipped"
-                }
-              ]
+              }
               }]
               '
         uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
