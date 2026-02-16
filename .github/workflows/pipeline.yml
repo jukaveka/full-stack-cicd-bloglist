@@ -138,11 +138,6 @@ jobs:
         id: set_sha
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
-      - name: Check env variables
-        env:
-          SHORT_SHA: ${{ env.SHORT_SHA }}
-        run: echo "$SHORT_SHA"
-
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
         env:
@@ -162,7 +157,7 @@ jobs:
                 },
                 {
                   "name": "Commit",
-                  "value": "${{ env.TRIGGER_SHA }} - ${{ env.TRIGGER_COMMIT_MESSAGE }}"
+                  "value": "${{ env.SHORT_SHA }} - ${{ env.TRIGGER_COMMIT_MESSAGE }}"
                 },
                 {
                   "name": "Build status",
