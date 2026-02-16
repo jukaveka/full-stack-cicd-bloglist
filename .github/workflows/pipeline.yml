@@ -134,10 +134,12 @@ jobs:
     steps:
       - name: Set short SHA
         id: set_sha
-        run: echo "short_sha=$(git rev-parse --short HEAD)" >> .env
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Check env variables
-        run: cat .env
+        env:
+          ENV_VARS: ${{ github.env }}
+        run: echo "$ENV_VARS"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
