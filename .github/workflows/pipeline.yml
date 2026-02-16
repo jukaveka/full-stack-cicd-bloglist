@@ -132,6 +132,8 @@ jobs:
     if: ${{ always() }}
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set short SHA
         id: set_sha
         run: echo "short_sha=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
