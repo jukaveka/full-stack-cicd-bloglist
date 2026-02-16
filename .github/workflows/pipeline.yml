@@ -119,6 +119,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    outputs:
+      short_sha: ${{ steps.set_sha.outputs.short_sha }}
+
     env:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
@@ -129,14 +132,12 @@ jobs:
     if: ${{ always() }}
 
     steps:
-      - name: Check env variables
+      - name: Set short SHA
+        id: set_sha
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> .env
 
-        run: |
-          echo "$BUILD_STATUS"
-          echo "$DEPLOYMENT_STATUS"
-          echo "$EVENT_TYPE"
-          echo "$ACTION_URL"
-          echo "$TRIGGER_SHA"
+      - name: Check env variables
+        run: cat .env
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
