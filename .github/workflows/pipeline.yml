@@ -124,6 +124,11 @@ jobs:
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
       HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       ACTION_URL: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      WORKFLOW_SHA: ${{ github.workflow_sha }}
+      TRIGGER_SHA: ${{ github.sha }}
+      SERVER_URL: ${{ github.server_url }}
+      FULL_REF: ${{ github.ref }}
+      BASE_REF: ${{ github.base_ref }}
 
     if: ${{ always() }}
 
@@ -137,6 +142,11 @@ jobs:
           echo "$REPOSITORY"
           echo "$RUN_ID"
           echo "$ACTION_URL"
+          echo "$WORKFLOW_SHA"
+          echo "$TRIGGER_SHA"
+          echo "$SERVER_URL"
+          echo "$FULL_REF"
+          echo "$BASE_REF"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
@@ -155,6 +165,10 @@ jobs:
                   "name": "Type",
                   "value": "${{ env.EVENT_TYPE }}"
                 },
+                {
+                  "name": "Commit",
+                  "value": ""
+                }
                 {
                   "name": "Build status",
                   "value": "${{ env.BUILD_STATUS }}",
