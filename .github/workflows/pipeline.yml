@@ -123,12 +123,14 @@ jobs:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
       HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-      ACTION_URL: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      ACTION_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       WORKFLOW_SHA: ${{ github.workflow_sha }}
       TRIGGER_SHA: ${{ github.sha }}
       SERVER_URL: ${{ github.server_url }}
       FULL_REF: ${{ github.ref }}
       BASE_REF: ${{ github.base_ref }}
+      ACTION: ${{ github.action }}
+      ACTION_PATH: ${{ github.action_path }}
 
     if: ${{ always() }}
 
@@ -147,6 +149,8 @@ jobs:
           echo "$SERVER_URL"
           echo "$FULL_REF"
           echo "$BASE_REF"
+          echo "$ACTION"
+          echo "$ACTION_PATH"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
