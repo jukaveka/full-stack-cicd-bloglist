@@ -157,7 +157,7 @@ jobs:
                 },
                 {
                   "name": "Commit",
-                  "value": "${{ env.SHORT_SHA }} - ${{ env.TRIGGER_COMMIT_MESSAGE }}"
+                  "value": "`${{ env.SHORT_SHA }}` ${{ env.TRIGGER_COMMIT_MESSAGE }}"
                 },
                 {
                   "name": "Build status",
