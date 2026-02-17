@@ -140,6 +140,11 @@ jobs:
         id: set_sha
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
+      - name: Set notification color
+        env:
+          STATUS_STRING: ${{ join([env.BUILD_STATUS, env.DEPLOYMENT_STATUS], ', ') }}
+        run: echo "$STATUS_STRING"
+
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
         env:
