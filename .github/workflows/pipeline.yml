@@ -130,6 +130,7 @@ jobs:
       TRIGGER_SHA: ${{ github.sha }}
       ACTION_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       REF: ${{ github.ref }}
+      STATUS_ARRAY: [${{ needs.build_and_test.result}}, ${{needs.deploy_and_release.result}}]
 
     if: ${{ always() }}
 
