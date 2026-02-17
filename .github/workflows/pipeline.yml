@@ -130,7 +130,7 @@ jobs:
       TRIGGER_SHA: ${{ github.sha }}
       ACTION_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       REF: ${{ github.ref }}
-      STATUS_ARRAY: [${{ needs.build_and_test.result}}, ${{needs.deploy_and_release.result}}]
+      STATUS_ARRAY: ${{ [needs.build_and_test.result, needs.deploy_and_release.result] }}
 
     if: ${{ always() }}
 
@@ -142,9 +142,7 @@ jobs:
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
       - name: Set notification color
-        env:
-          STATUS_STRING: ${{ join([env.BUILD_STATUS, env.DEPLOYMENT_STATUS], ', ') }}
-        run: echo "$STATUS_STRING"
+        run: echo "$STATUS_ARRAY"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
