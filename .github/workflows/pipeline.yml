@@ -167,8 +167,6 @@ jobs:
         if: ${{ env.EVENT_TYPE == 'push' }}
         run: echo "EVENT_DETAIL_FIELDS=$PUSH_FIELDS_JSON" >> "$GITHUB_ENV"
 
-      - name: Set PR notification details
-
       - name: Send Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
         env:
