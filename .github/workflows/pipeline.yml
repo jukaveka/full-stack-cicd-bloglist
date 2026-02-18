@@ -130,7 +130,6 @@ jobs:
       TRIGGER_SHA: ${{ github.sha }}
       ACTION_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       REF: ${{ github.ref }}
-      FAILURE_STATUS_ARRAY: [failed, cancelled]
 
     if: ${{ always() }}
 
@@ -142,7 +141,7 @@ jobs:
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
       - name: Set notification color
-        if: ${{ contains(env.BUILD_STATUS, env.FAILURE_STATUS_ARRAY) == 'true' || contains(env.DEPLOYMENT_STATUS, env.FAILURE_STATUS_ARRAY) == 'true' }}
+        if: ${{ env.BUILD_STATUS != 'success' || env.DEPLOYMENT_STATUS == 'failed' || env.DEPLOYMENT_STATUS == 'cancelled' }}
         run: echo "Jeejee"
 
       - name: Discord notification
