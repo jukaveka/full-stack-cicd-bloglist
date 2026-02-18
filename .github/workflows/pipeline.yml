@@ -206,3 +206,4 @@ jobs:
               }]
               '
         uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
+        run: echo "$DISCORD_EMBEDS"
