@@ -130,7 +130,7 @@ jobs:
       TRIGGER_SHA: ${{ github.sha }}
       ACTION_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       REF: ${{ github.ref }}
-      FAILURE_STATUS_ARRAY: ${{ [failed, cancelled] }}
+      FAILURE_STATUS_ARRAY: [failed, cancelled]
 
     if: ${{ always() }}
 
