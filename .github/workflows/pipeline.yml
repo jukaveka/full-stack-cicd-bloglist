@@ -12,6 +12,7 @@ on:
 env:
   COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ', ') }}
   SKIP_STRING: "#skip"
+  EVENT_TYPE: ${{ github.event_name }}
 
 jobs:
   build_and_test:
@@ -24,6 +25,8 @@ jobs:
       TEST_MONGODB_URI: ${{ secrets.TEST_DATABASE_CREDENTIALS }}
       PORT: ${{ secrets.TEST_DATABASE_PORT }}
       SECRET: ${{ secrets.TOKEN_SECRET }}
+
+    if: false
 
     steps:
       - uses: actions/checkout@v4
@@ -92,10 +95,12 @@ jobs:
 
   deploy_and_release:
     needs: [build_and_test]
-    runs-on: ubuntu-latest
-    if: ${{ (needs.build_and_test.outputs.skip_release == 'false') && (github.event_name == 'push') && (github.ref_name == 'main') }}
-    steps:
 
+    runs-on: ubuntu-latest
+
+    if: false
+
+    steps:
       - uses: actions/checkout@v4
 
       - name: Deploy application to production
@@ -108,3 +113,110 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
         uses: anothrNick/github-tag-action@1.75.0
+
+  notify_result:
+    needs: [build_and_test, deploy_and_release]
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      short_sha: ${{ steps.set_sha.outputs.short_sha }}
+
+    env:
+      BUILD_STATUS: ${{ needs.build_and_test.result }}
+      DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
+      TRIGGER_SHA: ${{ github.sha }}
+      ACTION_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      REF: ${{ github.ref }}
+
+    if: ${{ always() }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set short SHA
+        id: set_sha
+        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
+
+      - name: Set notification color if failure
+        env:
+          FAILURE_COLOR: "15146294"
+        if: ${{ env.BUILD_STATUS != 'success' || env.DEPLOYMENT_STATUS == 'failed' || env.DEPLOYMENT_STATUS == 'cancelled' }}
+        run: echo "NOTIFICATION_COLOR=$FAILURE_COLOR" >> "$GITHUB_ENV"
+
+      - name: Set notification color if success & PR event
+        env:
+          PR_COLOR: "9386373"
+        if: ${{ env.BUILD_STATUS == 'skipped' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'pull_request'}}
+        run: echo "NOTIFICATION_COLOR=$PR_COLOR" >> "$GITHUB_ENV"
+
+      - name: Set notification color if success & push event
+        env:
+          PUSH_COLOR: "10461439"
+        if: ${{ env.BUILD_STATUS == 'skipped' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'push'}}
+        run: echo "NOTIFICATION_COLOR=$PUSH_COLOR" >> "$GITHUB_ENV"
+
+      - name: Set push notification details
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+        if: ${{ env.EVENT_TYPE == 'push' }}
+        run: |
+          echo "EVENT_DETAIL_NAME=Commit" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_VALUE=$SHORT_SHA" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_URL=$COMMIT_URL" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_MESSAGE=$COMMIT_MESSAGE" >> "$GITHUB_ENV"
+
+      - name: Set pull request notification details
+        env:
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+          PULL_REQUEST_URL: ${{ github.event.pull_request.url }}
+          PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+        if: ${{ env.EVENT_TYPE == 'pull_request' }}
+        run: |
+          echo "EVENT_DETAIL_NAME=PR" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_VALUE=$PULL_REQUEST_NUMBER" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_URL=$PULL_REQUEST_URL" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_MESSAGE=$PULL_REQUEST_TITLE" >> "$GITHUB_ENV"
+
+      - name: Send Discord notification
+        env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+            DISCORD_EMBEDS: '[{
+              "title": "Build report",
+              "url": "${{ env.ACTION_URL }}",
+              "author": {
+                "name": "GitHub Actions",
+                "url": "https://github.com/jukaveka/full-stack-cicd-bloglist/actions",
+                "icon_url": "https://avatars.githubusercontent.com/u/44036562?s=200&v=4"
+              },
+              "color": "${{ env.NOTIFICATION_COLOR }}",
+              "fields": [
+                {
+                  "name": "Type",
+                  "value": "${{ env.EVENT_TYPE }}",
+                  "inline": true
+                },
+                {
+                  "name": "Ref",
+                  "value": "${{ env.REF }}",
+                  "inline": true
+                },
+                {
+                  "name": "${{ env.EVENT_DETAIL_NAME }}",
+                  "value": "[`${{ env.EVENT_DETAIL_VALUE }}`](${{ env.EVENT_DETAIL_URL }}) ${{ env.EVENT_DETAIL_MESSAGE }}"
+                },
+                {
+                  "name": "Build status",
+                  "value": "${{ env.BUILD_STATUS }}",
+                  "inline": true
+                },
+                {
+                  "name": "Deployment status",
+                  "value": "${{ env.DEPLOYMENT_STATUS }}",
+                  "inline": true
+                }
+              ]
+              }]
+              '
+        uses: "Ilshidur/action-discord@ad5235de713df3ef38022185499b02ffe93b7efe"
