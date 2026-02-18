@@ -125,8 +125,6 @@ jobs:
     env:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
-      COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-      COMMIT_URL: ${{ github.event.head_commit.url }}
       TRIGGER_SHA: ${{ github.sha }}
       ACTION_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       REF: ${{ github.ref }}
@@ -159,6 +157,9 @@ jobs:
         run: echo "NOTIFICATION_COLOR=$PUSH_COLOR" >> "$GITHUB_ENV"
 
       - name: Set push notification details
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
         if: ${{ env.EVENT_TYPE == 'push' }}
         run: |
           echo "EVENT_DETAIL_NAME=Commit" >> "$GITHUB_ENV"
@@ -166,8 +167,19 @@ jobs:
           echo "EVENT_DETAIL_URL=$COMMIT_URL" >> "$GITHUB_ENV"
           echo "EVENT_DETAIL_MESSAGE=$COMMIT_MESSAGE" >> "$GITHUB_ENV"
 
+      - name: Set pull request notification details
+        env:
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+          PULL_REQUEST_URL: ${{ github.event.pull_request.url }}
+          PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+        if: ${{ env.EVENT_TYPE == 'pull_request' }}
+        run: |
+          echo "EVENT_DETAIL_NAME=PR" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_VALUE=$PULL_REQUEST_NUMBER" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_URL=$PULL_REQUEST_URL" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_MESSAGE=$PULL_REQUEST_TITLE" >> "$GITHUB_ENV"
+
       - name: Send Discord notification
-        if: ${{ env.EVENT_TYPE == 'push' }}
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
             DISCORD_EMBEDS: '[{
