@@ -163,7 +163,7 @@ jobs:
           PUSH_FIELD_DETAILS: '{
                   "name": "Commit",
                   "value": "[`${{ env.SHORT_SHA }}`](${{ env.TRIGGER_COMMIT_URL }}) ${{ env.TRIGGER_COMMIT_MESSAGE }}"
-                }'
+                },'
         if: ${{ env.EVENT_TYPE == 'push' }}
         run: echo "EVENT_DETAIL_FIELDS=$PUSH_FIELD_DETAILS" >> "$GITHUB_ENV"
 
@@ -191,7 +191,7 @@ jobs:
                   "value": "${{ env.REF }}",
                   "inline": true
                 },
-                "${{ env.EVENT_TYPE_DETAILS }}",
+                ${{ env.EVENT_TYPE_DETAILS }}
                 {
                   "name": "Build status",
                   "value": "${{ env.BUILD_STATUS }}",
