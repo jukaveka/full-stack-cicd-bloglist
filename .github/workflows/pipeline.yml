@@ -159,10 +159,9 @@ jobs:
         run: echo "NOTIFICATION_COLOR=$PUSH_COLOR" >> "$GITHUB_ENV"
 
       - name: Set push notification details
-        env:
-          PUSH_FIELD_DETAILS: 'asd'
         if: ${{ env.EVENT_TYPE == 'push' }}
-        run: echo "EVENT_DETAIL_FIELDS=$PUSH_FIELD_DETAILS" >> "$GITHUB_ENV"
+        run: |
+          echo "EVENT_DETAIL_NAME='Commit'" >> "$GITHUB_ENV"
 
       - name: Send Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
@@ -189,7 +188,7 @@ jobs:
                   "inline": true
                 },
                 {
-                  "name": "Commit",
+                  "name": "${{ env.EVENT_DETAIL_NAME }}",
                   "value": "[`${{ env.SHORT_SHA }}`](${{ env.TRIGGER_COMMIT_URL }}) ${{ env.TRIGGER_COMMIT_MESSAGE }}"
                 },
                 {
