@@ -125,8 +125,8 @@ jobs:
     env:
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
-      TRIGGER_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-      TRIGGER_COMMIT_URL: ${{ github.event.head_commit.url }}
+      COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+      COMMIT_URL: ${{ github.event.head_commit.url }}
       TRIGGER_SHA: ${{ github.sha }}
       ACTION_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       REF: ${{ github.ref }}
@@ -162,7 +162,9 @@ jobs:
         if: ${{ env.EVENT_TYPE == 'push' }}
         run: |
           echo "EVENT_DETAIL_NAME=Commit" >> "$GITHUB_ENV"
-          echo "EVENT_DETAIL_VALUE=[`${{ env.SHORT_SHA }}`](${{ env.TRIGGER_COMMIT_URL }}) ${{ env.TRIGGER_COMMIT_MESSAGE }}" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_VALUE=$SHORT_SHA" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_URL=$COMMIT_URL" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_MESSAGE=$COMMIT_MESSAGE" >> "$GITHUB_ENV"
 
       - name: Send Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
@@ -190,7 +192,7 @@ jobs:
                 },
                 {
                   "name": "${{ env.EVENT_DETAIL_NAME }}",
-                  "value": "${{ env.EVENT_DETAIL_VALUE }}"
+                  "value": "[`${{ env.EVENT_DETAIL_VALUE }}`](${{ env.EVENT_DETAIL_URL }}) ${{ env.EVENT_DETAIL_MESSAGE }}"
                 },
                 {
                   "name": "Build status",
