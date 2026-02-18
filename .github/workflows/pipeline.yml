@@ -141,8 +141,12 @@ jobs:
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
       - name: Set notification color
+        env:
+          FAILURE_COLOR: "15146294"
+          PR_COLOR: "9386373"
+          PUSH_COLOR: "10461439"
         if: ${{ env.BUILD_STATUS != 'success' || env.DEPLOYMENT_STATUS == 'failed' || env.DEPLOYMENT_STATUS == 'cancelled' }}
-        run: echo "jeejee"
+        run: echo "NOTIFICATION_COLOR=$FAILURE_COLOR" >> "$GITHUB_ENV"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
@@ -156,7 +160,7 @@ jobs:
                 "url": "https://github.com/jukaveka/full-stack-cicd-bloglist/actions",
                 "icon_url": "https://avatars.githubusercontent.com/u/44036562?s=200&v=4"
               },
-              "color": "15146294",
+              "color": "${{ env.NOTIFICATION_COLOR }}",
               "fields": [
                 {
                   "name": "Type",
