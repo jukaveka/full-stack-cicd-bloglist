@@ -26,8 +26,6 @@ jobs:
       PORT: ${{ secrets.TEST_DATABASE_PORT }}
       SECRET: ${{ secrets.TOKEN_SECRET }}
 
-    if: false
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -98,7 +96,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    if: false
+    if: ${{ (needs.build_and_test.outputs.skip_release == 'false') && (github.event_name == 'push') && (github.ref_name == 'main') }}
 
     steps:
       - uses: actions/checkout@v4
@@ -152,13 +150,13 @@ jobs:
       - name: Set notification color if success & PR event
         env:
           PR_COLOR: "9386373"
-        if: ${{ env.BUILD_STATUS == 'skipped' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'pull_request'}}
+        if: ${{ env.BUILD_STATUS == 'success' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'pull_request'}}
         run: echo "NOTIFICATION_COLOR=$PR_COLOR" >> "$GITHUB_ENV"
 
       - name: Set notification color if success & push event
         env:
           PUSH_COLOR: "10461439"
-        if: ${{ env.BUILD_STATUS == 'skipped' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'push'}}
+        if: ${{ env.BUILD_STATUS == 'success' && (env.DEPLOYMENT_STATUS == 'success' || env.DEPLOYMENT_STATUS == 'skipped') && env.EVENT_TYPE == 'push'}}
         run: echo "NOTIFICATION_COLOR=$PUSH_COLOR" >> "$GITHUB_ENV"
 
       - name: Set push notification details
