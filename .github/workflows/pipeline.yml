@@ -161,7 +161,8 @@ jobs:
       - name: Set push notification details
         if: ${{ env.EVENT_TYPE == 'push' }}
         run: |
-          echo "EVENT_DETAIL_NAME='Commit'" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_NAME=Commit" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_VALUE=[`${{ env.SHORT_SHA }}`](${{ env.TRIGGER_COMMIT_URL }}) ${{ env.TRIGGER_COMMIT_MESSAGE }}" >> "$GITHUB_ENV"
 
       - name: Send Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
@@ -189,7 +190,7 @@ jobs:
                 },
                 {
                   "name": "${{ env.EVENT_DETAIL_NAME }}",
-                  "value": "[`${{ env.SHORT_SHA }}`](${{ env.TRIGGER_COMMIT_URL }}) ${{ env.TRIGGER_COMMIT_MESSAGE }}"
+                  "value": "${{ env.EVENT_DETAIL_VALUE }}"
                 },
                 {
                   "name": "Build status",
