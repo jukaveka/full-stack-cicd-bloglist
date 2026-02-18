@@ -158,6 +158,21 @@ jobs:
         if: ${{ env.BUILD_STATUS == 'skipped' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'push'}}
         run: echo "NOTIFICATION_COLOR=$PUSH_COLOR" >> "$GITHUB_ENV"
 
+      - name: Set push notification details
+        env:
+          PUSH_FIELDS_JSON: '{
+                  "name": "Build status",
+                  "value": "${{ env.BUILD_STATUS }}",
+                  "inline": true
+                },
+                {
+                  "name": "Deployment status",
+                  "value": "${{ env.DEPLOYMENT_STATUS }}",
+                  "inline": true
+                }'
+        if: ${{ env.EVENT_TYPE == 'push' }}
+        run: echo "$PUSH_FIELDS_JSON"
+
       - name: Send Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
         env:
