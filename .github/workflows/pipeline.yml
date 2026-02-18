@@ -158,11 +158,12 @@ jobs:
 
       - name: Set push notification details
         env:
+          TITLE: Commit
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           COMMIT_URL: ${{ github.event.head_commit.url }}
         if: ${{ env.EVENT_TYPE == 'push' }}
         run: |
-          echo "EVENT_DETAIL_NAME=Commit" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_NAME=$TITLE" >> "$GITHUB_ENV"
           echo "EVENT_DETAIL_VALUE=$SHORT_SHA" >> "$GITHUB_ENV"
           echo "EVENT_DETAIL_URL=$COMMIT_URL" >> "$GITHUB_ENV"
           echo "EVENT_DETAIL_MESSAGE=$COMMIT_MESSAGE" >> "$GITHUB_ENV"
