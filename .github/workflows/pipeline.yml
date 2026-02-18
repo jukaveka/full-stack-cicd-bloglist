@@ -161,17 +161,13 @@ jobs:
       - name: Set push notification details
         env:
           PUSH_FIELDS_JSON: '{
-                  "name": "Build status",
-                  "value": "${{ env.BUILD_STATUS }}",
-                  "inline": true
-                },
-                {
-                  "name": "Deployment status",
-                  "value": "${{ env.DEPLOYMENT_STATUS }}",
-                  "inline": true
+                  "name": "Commit",
+                  "value": "[`${{ env.SHORT_SHA }}`](${{ env.TRIGGER_COMMIT_URL }}) ${{ env.TRIGGER_COMMIT_MESSAGE }}"
                 }'
         if: ${{ env.EVENT_TYPE == 'push' }}
         run: echo "EVENT_DETAIL_FIELDS=$PUSH_FIELDS_JSON" >> "$GITHUB_ENV"
+
+      - name: Set PR notification details
 
       - name: Send Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
@@ -197,11 +193,17 @@ jobs:
                   "value": "${{ env.REF }}",
                   "inline": true
                 },
+                ${{ env.EVENT_TYPE_DETAILS }},
                 {
-                  "name": "Commit",
-                  "value": "[`${{ env.SHORT_SHA }}`](${{ env.TRIGGER_COMMIT_URL }}) ${{ env.TRIGGER_COMMIT_MESSAGE }}"
+                  "name": "Build status",
+                  "value": "${{ env.BUILD_STATUS }}",
+                  "inline": true
                 },
-                ${{ env.EVENT_DETAIL_FIELDS }}
+                {
+                  "name": "Deployment status",
+                  "value": "${{ env.DEPLOYMENT_STATUS }}",
+                  "inline": true
+                }
               ]
               }]
               '
