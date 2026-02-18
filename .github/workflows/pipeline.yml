@@ -147,6 +147,8 @@ jobs:
           PUSH_COLOR: "10461439"
         if: ${{ env.BUILD_STATUS != 'success' || env.DEPLOYMENT_STATUS == 'failed' || env.DEPLOYMENT_STATUS == 'cancelled' }}
         run: echo "NOTIFICATION_COLOR=$FAILURE_COLOR" >> "$GITHUB_ENV"
+        if: ${{ env.BUILD_STATUS == 'skipped' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'push'}}
+        run: echo "NOTIFICATION_COLOR=$PUSH_COLOR" >> "$GITHUB_ENV"
 
       - name: Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
