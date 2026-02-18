@@ -191,8 +191,7 @@ jobs:
                   "value": "${{ env.REF }}",
                   "inline": true
                 },
-                ${{ env.EVENT_TYPE_DETAILS }}
-                ,
+                "${{ env.EVENT_TYPE_DETAILS }}",
                 {
                   "name": "Build status",
                   "value": "${{ env.BUILD_STATUS }}",
