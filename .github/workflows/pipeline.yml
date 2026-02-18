@@ -140,17 +140,25 @@ jobs:
         id: set_sha
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
-      - name: Set notification color
+      - name: Set notification color if failure
         env:
           FAILURE_COLOR: "15146294"
-          PR_COLOR: "9386373"
-          PUSH_COLOR: "10461439"
         if: ${{ env.BUILD_STATUS != 'success' || env.DEPLOYMENT_STATUS == 'failed' || env.DEPLOYMENT_STATUS == 'cancelled' }}
         run: echo "NOTIFICATION_COLOR=$FAILURE_COLOR" >> "$GITHUB_ENV"
+
+      - name: Set notification color if success & PR event
+        env:
+          PR_COLOR: "9386373"
+        if: ${{ env.BUILD_STATUS == 'skipped' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'pull_request'}}
+        run: echo "NOTIFICATION_COLOR=$PR_COLOR" >> "$GITHUB_ENV"
+
+      - name: Set notification color if success & push event
+        env:
+          PUSH_COLOR: "10461439"
         if: ${{ env.BUILD_STATUS == 'skipped' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'push'}}
         run: echo "NOTIFICATION_COLOR=$PUSH_COLOR" >> "$GITHUB_ENV"
 
-      - name: Discord notification
+      - name: Send Discord notification
         if: ${{ env.EVENT_TYPE == 'push' }}
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
