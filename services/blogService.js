@@ -1,5 +1,5 @@
 const Blog = require("../models/blog")
-const userService = require("./userService")
+const userService = require('./userService')
 const validatorService = require("./requestValidatorService")
 const tokenService = require("./tokenService")
 
