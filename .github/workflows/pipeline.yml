@@ -40,8 +40,7 @@ jobs:
         name: Check for skip tag in commit messages
         env:
           SKIP_TAG: ${{ contains(env.COMMIT_MESSAGES, env.SKIP_STRING) }}
-        run: |
-          echo "skip_release=$SKIP_TAG" >> "$GITHUB_OUTPUT"
+        run: echo "skip_release=$SKIP_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         run: |
