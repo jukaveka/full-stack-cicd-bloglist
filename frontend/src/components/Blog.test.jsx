@@ -62,6 +62,6 @@ describe("<Blog />", () => {
     await user.click(likeButton)
     await user.click(likeButton)
 
-    expect(updateBlogLikes.mock.calls).toHaveLength(1)
+    expect(updateBlogLikes.mock.calls).toHaveLength(2)
   })
 })
