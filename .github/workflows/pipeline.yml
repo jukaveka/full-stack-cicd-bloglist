@@ -3,8 +3,8 @@ name: CI/CD pipeline
 on:
   push:
     branches:
-      - cicd-pipeline
       - main
+      - cicd-pipeline
   pull_request:
     branches: main
     types: [opened, synchronize]
@@ -42,8 +42,6 @@ jobs:
         env:
           SKIP_TAG: ${{ contains(env.COMMIT_MESSAGES, env.SKIP_STRING) }}
         run: |
-          echo "$SKIP_TAG"
-          echo "joo"
           echo "skip_release=$SKIP_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
@@ -117,10 +115,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    outputs:
-      short_sha: ${{ steps.set_sha.outputs.short_sha }}
-
     env:
+      SKIP_TAG: ${{ needs.build_and_test.outputs.skip_release }}
       BUILD_STATUS: ${{ needs.build_and_test.result }}
       DEPLOYMENT_STATUS: ${{ needs.deploy_and_release.result }}
       TRIGGER_SHA: ${{ github.sha }}
@@ -131,11 +127,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Env stuff
-        run: |
-          echo "$EVENT_TYPE"
-          echo "$COMMIT_MESSAGES"
 
       - name: Set short SHA
         id: set_sha
@@ -150,23 +141,22 @@ jobs:
       - name: Set notification color if success & PR event
         env:
           PR_COLOR: "9386373"
-        if: ${{ env.BUILD_STATUS == 'success' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'pull_request'}}
+        if: ${{ env.BUILD_STATUS == 'success' && env.DEPLOYMENT_STATUS == 'skipped' && env.EVENT_TYPE == 'pull_request' }}
         run: echo "NOTIFICATION_COLOR=$PR_COLOR" >> "$GITHUB_ENV"
 
       - name: Set notification color if success & push event
         env:
           PUSH_COLOR: "10461439"
-        if: ${{ env.BUILD_STATUS == 'success' && (env.DEPLOYMENT_STATUS == 'success' || env.DEPLOYMENT_STATUS == 'skipped') && env.EVENT_TYPE == 'push'}}
+        if: ${{ env.BUILD_STATUS == 'success' && (env.DEPLOYMENT_STATUS == 'success' && env.SKIP_TAG == 'false' || env.DEPLOYMENT_STATUS == 'skipped' && env.SKIP_TAG == 'true') && env.EVENT_TYPE == 'push' }}
         run: echo "NOTIFICATION_COLOR=$PUSH_COLOR" >> "$GITHUB_ENV"
 
       - name: Set push notification details
         env:
-          TITLE: Commit
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           COMMIT_URL: ${{ github.event.head_commit.url }}
         if: ${{ env.EVENT_TYPE == 'push' }}
         run: |
-          echo "EVENT_DETAIL_NAME=$TITLE" >> "$GITHUB_ENV"
+          echo "EVENT_DETAIL_NAME=Commit" >> "$GITHUB_ENV"
           echo "EVENT_DETAIL_VALUE=$SHORT_SHA" >> "$GITHUB_ENV"
           echo "EVENT_DETAIL_URL=$COMMIT_URL" >> "$GITHUB_ENV"
           echo "EVENT_DETAIL_MESSAGE=$COMMIT_MESSAGE" >> "$GITHUB_ENV"
