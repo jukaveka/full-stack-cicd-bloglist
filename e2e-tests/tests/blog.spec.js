@@ -26,7 +26,7 @@ describe("Blog app", () => {
     const header = page.getByRole("heading", { name: "Login" })
     await expect(header).toBeVisible()
 
-    const form = page.getByTestId("loginform")
+    const form = page.getByTestId("logonform")
     await expect(form).toBeVisible()
   })
 
