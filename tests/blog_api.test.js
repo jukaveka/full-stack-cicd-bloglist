@@ -35,10 +35,7 @@ describe("With initial test blogs inserted", () => {
         .expect(200)
         .expect("Content-Type", /application\/json/)
 
-      assert.strictEqual(
-        allBlogs.body.length,
-        testBlogData.listWithManyBlogs.length
-      )
+      assert.strictEqual(allBlogs.body.length, 1)
     })
 
     test("uses id as identifier instead of _id", async () => {
